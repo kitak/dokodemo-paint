@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script>
+    var gui = require('nw.gui');
+    var win = gui.Window.get();
+
+    win.setResizable(true);
+    win.maximize();
+    win.on('maximize', function () {
+      win.setResizable(false);
+      win.show();
+    });
+  </script>
+  <style>
+    #hoge {
+      width: 300px;
+      height: 300px;
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <div id="hoge">
+  </div>
+</body>
+</html>

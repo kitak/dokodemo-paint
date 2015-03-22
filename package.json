@@ -1,0 +1,30 @@
+{
+  "name": "nw-desktop-cover-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "nw --disable-gpu --force-cpu-draw"
+  },
+  "window": {
+    "always-on-top": true,
+    "resizable": false,
+    "transparent": true,
+    "show": false,
+    "toolbar": false,
+    "frame": false
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/kitak/nw-desktop-cover-sample.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kitak/nw-desktop-cover-sample/issues"
+  },
+  "homepage": "https://github.com/kitak/nw-desktop-cover-sample",
+  "dependencies": {
+    "nw": "^0.12.0"
+  }
+}
