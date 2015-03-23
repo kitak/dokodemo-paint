@@ -12,7 +12,8 @@
     "transparent": true,
     "show": false,
     "toolbar": false,
-    "frame": false
+    "frame": false,
+    "show_in_taskbar": false
   },
   "repository": {
     "type": "git",
