@@ -3,76 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
-  <script src="./node_modules/jquery/dist/jquery.js"></script>
-  <script>
-    var gui = require('nw.gui');
-    var win = gui.Window.get();
-    var context = null;
-
-    win.setResizable(true);
-    win.maximize();
-
-    var option = {
-      key: "Ctrl+Shift+A",
-    };
-    var shortcut = new gui.Shortcut(option);
-    var windowOpened = false;
-    shortcut.on('active', function () {
-      if (windowOpened) {
-        context.clearRect(0, 0, $(window).width(), $(window).height());
-        win.hide();
-        windowOpened = false;
-      } else {
-        win.show();
-        context.fillStyle = "rgba(255, 255, 255, 0.1)";
-        context.fillRect(0, 0, $(window).width(), $(window).height());
-        win.focus();
-        windowOpened = true;
-      }
-    });
-    gui.App.registerGlobalHotKey(shortcut);
-
-    win.on('maximize', function () {
-      win.setResizable(false);
-      win.show();
-
-      setTimeout(function () {
-        var canvas = document.getElementsByTagName('canvas')[0];
-        $(canvas).attr('width', $(window).width());
-        $(canvas).attr('height', $(window).height());
-        context = canvas.getContext('2d');
-        context.fillStyle = "rgba(255, 255, 255, 0.1)";
-        context.fillRect(0, 0, $(window).width(), $(window).height());
-
-        context.strokeStyle = "#FC0C59";
-        context.lineWidth = 5;
-        context.lineJoin = "round";
-        context.lineCap = "round";
-
-        var down = false;
-        canvas.addEventListener('mousedown', function (e) {
-          down = true;
-          context.beginPath();
-          context.moveTo(e.clientX, e.clientY);
-        }, false)
-        window.addEventListener('mousemove', function (e) {
-          if (!down) return;
-          context.lineTo(e.clientX, e.clientY);
-          context.stroke();
-        }, false)
-        window.addEventListener('mouseup', function (e) {
-          if (!down) return;
-          context.lineTo(e.clientX, e.clientY);
-          context.stroke();
-          context.closePath();
-          down = false;
-        }, false)
-
-        win.focus();
-        windowOpened = true;
-      }, 100);
-    });
-  </script>
+  <script src="./scripts/app.js"></script>
   <style>
     html, body {
       width: 100%;
