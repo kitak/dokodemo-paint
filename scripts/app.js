@@ -52,38 +52,30 @@
     context.lineJoin = "round";
     context.lineCap = "round";
 
-    var down = false;
     canvas.addEventListener('mousedown', function (e) {
-      down = true;
-      context.beginPath();
-      context.moveTo(e.clientX, e.clientY);
     }, false);
     var drawStreamByMouse = function () {
       return Bacon.fromEventTarget(window, 'mousedown')
                   .flatMap(function () {
                     return Bacon.fromEventTarget(canvas, 'mousemove')
                                 .takeUntil(Bacon.fromEventTarget(window, 'mouseup'));
+                  })
+                  .map(function (e) {
+                    return {
+                      x: e.clientX,
+                      y: e.clientY
+                    };
                   });
     };
-    drawStreamByMouse().onValue(function (e) {
-      console.log(e);
+    var drawStream = drawStreamByMouse();
+    drawStream.slidingWindow(2).filter(function (points) {
+      return points.length == 2;
+    }).onValue(function (points) {
+      context.beginPath();
+      context.moveTo(points[0].x, points[0].y);
+      context.lineTo(points[1].x, points[1].y);
+      context.stroke();
     });
-    window.addEventListener('mousemove', function (e) {
-      if (!down) {
-        return;
-      }
-      context.lineTo(e.clientX, e.clientY);
-      context.stroke();
-    }, false);
-    window.addEventListener('mouseup', function (e) {
-      if (!down) {
-        return;
-      }
-      context.lineTo(e.clientX, e.clientY);
-      context.stroke();
-      context.closePath();
-      down = false;
-    }, false);
   };
 
   initialize();
