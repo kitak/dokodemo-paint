@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/kitak/nw-desktop-cover-sample",
   "dependencies": {
+    "baconjs": "^0.7.53",
     "nw": "^0.12.0"
   }
 }

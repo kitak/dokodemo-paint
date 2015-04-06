@@ -58,6 +58,16 @@
       context.beginPath();
       context.moveTo(e.clientX, e.clientY);
     }, false);
+    var drawStreamByMouse = function () {
+      return Bacon.fromEventTarget(window, 'mousedown')
+                  .flatMap(function () {
+                    return Bacon.fromEventTarget(canvas, 'mousemove')
+                                .takeUntil(Bacon.fromEventTarget(window, 'mouseup'));
+                  });
+    };
+    drawStreamByMouse().onValue(function (e) {
+      console.log(e);
+    });
     window.addEventListener('mousemove', function (e) {
       if (!down) {
         return;
