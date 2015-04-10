@@ -48,12 +48,10 @@
     clearCanvas(context);
 
     context.strokeStyle = "#FC0C59";
-    context.lineWidth = 5;
+    context.lineWidth = 15;
     context.lineJoin = "round";
     context.lineCap = "round";
 
-    canvas.addEventListener('mousedown', function (e) {
-    }, false);
     var drawStreamByMouse = function () {
       return Bacon.fromEventTarget(window, 'mousedown')
                   .flatMap(function () {
@@ -68,14 +66,15 @@
                   });
     };
     var drawStream = drawStreamByMouse();
-    drawStream.slidingWindow(2).filter(function (points) {
-      return points.length == 2;
-    }).onValue(function (points) {
-      context.beginPath();
-      context.moveTo(points[0].x, points[0].y);
-      context.lineTo(points[1].x, points[1].y);
-      context.stroke();
-    });
+    drawStream
+      .slidingWindow(2, 2)
+      .onValue(function (points) {
+        context.beginPath();
+        context.moveTo(points[0].x, points[0].y);
+        context.lineTo(points[1].x, points[1].y);
+        context.stroke();
+        context.closePath();
+      });
   };
 
   initialize();
