@@ -48,26 +48,39 @@
     clearCanvas(context);
 
     context.strokeStyle = "#FC0C59";
-    context.lineWidth = 15;
+    context.lineWidth = 10;
     context.lineJoin = "round";
     context.lineCap = "round";
 
     var drawStreamByMouse = function () {
-      return Bacon.fromEventTarget(window, 'mousedown')
-                  .flatMap(function () {
-                    return Bacon.fromEventTarget(canvas, 'mousemove')
-                                .takeUntil(Bacon.fromEventTarget(window, 'mouseup'));
-                  })
-                  .map(function (e) {
-                    return {
-                      x: e.clientX,
-                      y: e.clientY
-                    };
-                  });
+      var a = Bacon.fromEventTarget(window, 'mousedown')
+                   .flatMap(function () {
+                     return Bacon.fromEventTarget(canvas, 'mousemove')
+                                 .takeUntil(Bacon.fromEventTarget(window, 'mouseup'));
+                   })
+                   .map(function (e) {
+                     return {
+                       x: e.clientX,
+                       y: e.clientY
+                     };
+                   });
+      var b = Bacon.fromEventTarget(window, 'mouseup')
+                   .map(function () {
+                     return {
+                       x: null,
+                       y: null
+                     };
+                   });
+      return a.merge(b);
     };
     var drawStream = drawStreamByMouse();
     drawStream
       .slidingWindow(2, 2)
+      .filter(function (points) {
+        var a = points[0];
+        var b = points[1];
+        return (a.x !== null) && (a.y !== null) && (b.x !== null) && (b.y !== null);
+      })
       .onValue(function (points) {
         context.beginPath();
         context.moveTo(points[0].x, points[0].y);
